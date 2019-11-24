@@ -1,4 +1,4 @@
-const createTaskEditTemplate = () => (
+export const createTaskEditTemplate = () => (
   `<article class="card card--edit card--yellow card--repeat">
     <form class="card__form" method="get">
       <div class="card__inner">
@@ -255,5 +255,3 @@ const createTaskEditTemplate = () => (
     </form>
   </article>`
 );
-
-export {createTaskEditTemplate};

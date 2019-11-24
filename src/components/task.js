@@ -1,4 +1,4 @@
-const createTaskTemplate = () => (
+export const createTaskTemplate = () => (
   `<article class="card card--black">
     <div class="card__form">
       <div class="card__inner">
@@ -65,5 +65,3 @@ const createTaskTemplate = () => (
     </div>
   </article>`
 );
-
-export {createTaskTemplate};

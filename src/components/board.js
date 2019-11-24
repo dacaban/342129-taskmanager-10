@@ -1,4 +1,4 @@
-const createBoardTemplate = () => (
+export const createBoardTemplate = () => (
   `<section class="board container">
     <div class="board__filter-list">
       <a href="#" class="board__filter">SORT BY DEFAULT</a>
@@ -8,5 +8,3 @@ const createBoardTemplate = () => (
     <div class="board__tasks"></div>
   </section>`
 );
-
-export {createBoardTemplate};

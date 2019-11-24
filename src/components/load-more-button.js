@@ -1,5 +1,3 @@
-const createLoadMoreButtonTemplate = () => (
+export const createLoadMoreButtonTemplate = () => (
   `<button class="load-more" type="button">load more</button>`
 );
-
-export {createLoadMoreButtonTemplate};
