@@ -1,30 +1,28 @@
 import {COLORS, DAYS, MONTHS} from '../const.js';
 import {formatTime} from '../utils.js';
 
-const createColorsMarkup = (colors, currentColor) => {
-  return colors
-    .map((color) => {
-      return (
-        `<input
-          type="radio"
-          id="color-${color}-4"
-          class="card__color-input card__color-input--${color} visually-hidden"
-          name="color"
-          value="${color}"
-          ${currentColor === color ? `checked` : ``}
-        />
-        <label
-          for="color-${color}-4"
-          class="card__color card__color--${color}"
-          >${color}</label
-        >`
-      );
-    })
-    .join(``);
-};
+const createColorsMarkup = (colors, currentColor) => (
+  colors
+    .map((color) => (
+      `<input
+        type="radio"
+        id="color-${color}-4"
+        class="card__color-input card__color-input--${color} visually-hidden"
+        name="color"
+        value="${color}"
+        ${currentColor === color ? `checked` : ``}
+      />
+      <label
+        for="color-${color}-4"
+        class="card__color card__color--${color}"
+        >${color}</label
+      >`
+    ))
+    .join(``)
+);
 
-const createRepeatingDaysMarkup = (days, repeatingDays) => {
-  return days
+const createRepeatingDaysMarkup = (days, repeatingDays) => (
+  days
     .map((day) => {
       const isChecked = repeatingDays[day];
       return (
@@ -41,13 +39,14 @@ const createRepeatingDaysMarkup = (days, repeatingDays) => {
         >`
       );
     })
-    .join(``);
-};
+    .join(``)
+);
 
-const createHashtags = (tags) => {
-  return Array.from(tags)
-    .map((tag) => {
-      return (
+const createHashtags = (tags) => (
+  Array
+    .from(tags)
+    .map((tag) => (
+      (
         `<span class="card__hashtag-inner">
           <input
             type="hidden"
@@ -65,10 +64,35 @@ const createHashtags = (tags) => {
             delete
           </button>
         </span>`
-      );
-    })
-    .join(``);
-};
+      )))
+    .join(``)
+);
+
+const createDateMarkup = (isDateShowing, date, time) => (
+  isDateShowing ?
+    `<fieldset class="card__date-deadline">
+      <label class="card__input-deadline-wrap">
+        <input
+          class="card__date"
+          type="text"
+          placeholder=""
+          name="date"
+          value="${date} ${time}"
+        />
+      </label>
+    </fieldset>`
+    : ``
+);
+
+const createRepeatingTaskMarkup = (isRepeatingTask, repeatingDaysMarkup) => (
+  isRepeatingTask ?
+    `<fieldset class="card__repeat-days">
+      <div class="card__repeat-days-inner">
+        ${repeatingDaysMarkup}
+      </div>
+    </fieldset>`
+    : ``
+);
 
 
 export const createTaskEditTemplate = (task) => {
@@ -87,6 +111,8 @@ export const createTaskEditTemplate = (task) => {
   const tagsMarkup = createHashtags(tags);
   const colorsMarkup = createColorsMarkup(COLORS, color);
   const repeatingDaysMarkup = createRepeatingDaysMarkup(DAYS, repeatingDays);
+  const dateMarkup = createDateMarkup(isDateShowing, date, time);
+  const repeatingTaskMarkup = createRepeatingTaskMarkup(isRepeatingTask, repeatingDaysMarkup);
 
   return (
     `<article class="card card--edit card--${color} ${repeatClass} ${deadlineClass}">
@@ -114,36 +140,11 @@ export const createTaskEditTemplate = (task) => {
                   <button class="card__date-deadline-toggle" type="button">
                     date: <span class="card__date-status">${isDateShowing ? `yes` : `no`}</span>
                   </button>
-  
-                  ${
-    isDateShowing ?
-      `<fieldset class="card__date-deadline">
-          <label class="card__input-deadline-wrap">
-            <input
-              class="card__date"
-              type="text"
-              placeholder=""
-              name="date"
-              value="${date} ${time}"
-            />
-          </label>
-        </fieldset>`
-      : ``
-    }
-  
+                  ${dateMarkup}
                   <button class="card__repeat-toggle" type="button">
                     repeat:<span class="card__repeat-status">${isRepeatingTask ? `yes` : `no`}</span>
                   </button>
-  
-                  ${
-    isRepeatingTask ?
-      `<fieldset class="card__repeat-days">
-                    <div class="card__repeat-days-inner">
-                      ${repeatingDaysMarkup}
-                    </div>
-                  </fieldset>`
-      : ``
-    }
+                  ${repeatingTaskMarkup}
                 </div>
   
                 <div class="card__hashtag">
