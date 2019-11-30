@@ -1,4 +1,4 @@
-import {Colors, Days, MonthNames} from '../const.js';
+import {COLORS, DAYS, MONTHS} from '../const.js';
 import {formatTime} from '../utils.js';
 
 const createColorsMarkup = (colors, currentColor) => {
@@ -20,7 +20,7 @@ const createColorsMarkup = (colors, currentColor) => {
         >`
       );
     })
-    .join(`\n`);
+    .join(``);
 };
 
 const createRepeatingDaysMarkup = (days, repeatingDays) => {
@@ -41,7 +41,7 @@ const createRepeatingDaysMarkup = (days, repeatingDays) => {
         >`
       );
     })
-    .join(`\n`);
+    .join(``);
 };
 
 const createHashtags = (tags) => {
@@ -67,7 +67,7 @@ const createHashtags = (tags) => {
         </span>`
       );
     })
-    .join(`\n`);
+    .join(``);
 };
 
 
@@ -77,7 +77,7 @@ export const createTaskEditTemplate = (task) => {
   const isExpired = dueDate instanceof Date && dueDate < Date.now();
   const isDateShowing = !!dueDate;
 
-  const date = isDateShowing ? `${dueDate.getDate()} ${MonthNames[dueDate.getMonth()]}` : ``;
+  const date = isDateShowing ? `${dueDate.getDate()} ${MONTHS[dueDate.getMonth()]}` : ``;
   const time = isDateShowing ? formatTime(dueDate) : ``;
 
   const isRepeatingTask = Object.values(repeatingDays).some(Boolean);
@@ -85,8 +85,8 @@ export const createTaskEditTemplate = (task) => {
   const deadlineClass = isExpired ? `card--deadline` : ``;
 
   const tagsMarkup = createHashtags(tags);
-  const colorsMarkup = createColorsMarkup(Colors, color);
-  const repeatingDaysMarkup = createRepeatingDaysMarkup(Days, repeatingDays);
+  const colorsMarkup = createColorsMarkup(COLORS, color);
+  const repeatingDaysMarkup = createRepeatingDaysMarkup(DAYS, repeatingDays);
 
   return (
     `<article class="card card--edit card--${color} ${repeatClass} ${deadlineClass}">

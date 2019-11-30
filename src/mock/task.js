@@ -1,12 +1,12 @@
-import {Colors} from '../const.js';
+import {COLORS} from '../const.js';
 
-const DescriptionItems = [
+const DESCRIPTIONS = [
   `Изучить теорию`,
   `Сделать домашку`,
   `Пройти интенсив на соточку`,
 ];
 
-const DefaultRepeatingDays = {
+const DEFAULT_REPEATING_DAYS = {
   'mo': false,
   'tu': false,
   'we': false,
@@ -16,7 +16,7 @@ const DefaultRepeatingDays = {
   'su': false,
 };
 
-const Tags = [
+const TAGS = [
   `homework`,
   `theory`,
   `practice`,
@@ -24,13 +24,13 @@ const Tags = [
   `keks`
 ];
 
+const getRandomIntegerNumber = (min, max) => {
+  return Math.floor(Math.random() * (max - min)) + min;
+};
+
 const getRandomArrayItem = (array) => {
   const randomIndex = getRandomIntegerNumber(0, array.length);
   return array[randomIndex];
-};
-
-const getRandomIntegerNumber = (min, max) => {
-  return Math.floor(Math.random() * (max - min)) + min;
 };
 
 const getRandomDate = () => {
@@ -44,35 +44,33 @@ const getRandomDate = () => {
 };
 
 const generateRepeatingDays = () => {
-  return Object.assign({}, DefaultRepeatingDays, {
+  return Object.assign({}, DEFAULT_REPEATING_DAYS, {
     'mo': Math.random() > 0.5,
   });
 };
 
-const generateTags = (tags) => {
-  return tags
+const generateTags = (tags) => (
+  tags
     .filter(() => Math.random() > 0.5)
-    .slice(0, 3);
-};
+    .slice(0, 3)
+);
 
-const generateTask = () => {
+export const generateTask = () => {
   const dueDate = Math.random() > 0.5 ? null : getRandomDate();
 
   return {
-    description: getRandomArrayItem(DescriptionItems),
+    description: getRandomArrayItem(DESCRIPTIONS),
     dueDate,
-    repeatingDays: dueDate ? DefaultRepeatingDays : generateRepeatingDays(),
-    tags: new Set(generateTags(Tags)),
-    color: getRandomArrayItem(Colors),
+    repeatingDays: dueDate ? DEFAULT_REPEATING_DAYS : generateRepeatingDays(),
+    tags: new Set(generateTags(TAGS)),
+    color: getRandomArrayItem(COLORS),
     isFavorite: Math.random() > 0.5,
     isArchive: Math.random() > 0.5,
   };
 };
 
-const generateTasks = (count) => {
+export const generateTasks = (count) => {
   return new Array(count)
     .fill(``)
     .map(generateTask);
 };
-
-export {generateTask, generateTasks};

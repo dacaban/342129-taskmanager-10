@@ -44,7 +44,8 @@ loadMoreButton.addEventListener(`click`, () => {
   const prevTasksCount = showingTasksCount;
   showingTasksCount = showingTasksCount + SHOWING_TASKS_COUNT_BY_BUTTON;
 
-  tasks.slice(prevTasksCount, showingTasksCount)
+  tasks
+    .slice(prevTasksCount, showingTasksCount)
     .forEach((task) => render(taskListElement, createTaskTemplate(task)));
 
   if (showingTasksCount >= tasks.length) {

@@ -7,8 +7,8 @@ const createFilterMarkup = (filter, isChecked) => {
         id="filter__${name}"
         class="filter__input visually-hidden"
         name="filter"
-        ${isChecked ? `checked` : ``}
-        ${!count ? `disabled` : ``}
+        ${isChecked && `checked`}
+        ${!count && `disabled`}
       />
       <label for="filter__${name}" class="filter__label">
         ${name} <span class="filter__${name}-count">${count}</span>
@@ -17,7 +17,7 @@ const createFilterMarkup = (filter, isChecked) => {
 };
 
 export const createFilterTemplate = (filters) => {
-  const filtersMarkup = filters.map((it, i) => createFilterMarkup(it, i === 0)).join(`\n`);
+  const filtersMarkup = filters.map((it, i) => createFilterMarkup(it, i === 0)).join(``);
 
   return (
     `<section class="main__filter filter container">
