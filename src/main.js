@@ -9,7 +9,7 @@ import NoTasksComponent from "./components/no-tasks";
 import SiteMenuComponent from './components/site-menu.js';
 import {generateTasks} from './mock/task.js';
 import {generateFilters} from './mock/filter.js';
-import {render, RenderPosition} from "./utils";
+import {render, remove, replace, RenderPosition} from "./utils/render";
 
 const TASK_COUNT = 22;
 const SHOWING_TASKS_COUNT_ON_START = 8;
@@ -23,8 +23,8 @@ const renderTask = (taskListElement, task) => {
       document.removeEventListener(`keydown`, onEscKeyDown);
     }
   };
-  const replaceEditToTask = () => tasksComponent.getElement().replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
-  const replaceTaskToEdit = () => tasksComponent.getElement().replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
+  const replaceEditToTask = () => replace(taskComponent, taskEditComponent);
+  const replaceTaskToEdit = () => replace(taskEditComponent, taskComponent);
 
   const taskComponent = new TaskComponent(task);
   const taskEditComponent = new TaskEditComponent(task);
@@ -40,13 +40,13 @@ const renderTask = (taskListElement, task) => {
     replaceEditToTask();
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
-  render(tasksComponent.getElement(), taskComponent.getElement(), RenderPosition.BEFOREEND);
+  render(tasksComponent.getElement(), taskComponent, RenderPosition.BEFOREEND);
 };
 
 const renderBoard = (boardComponent, tasks) => {
   const isAllTasksArchived = tasks.every((task) => task.isArchive);
   if (isAllTasksArchived) {
-    render(boardComponent.getElement(), new NoTasksComponent().getElement(), RenderPosition.BEFOREEND);
+    render(boardComponent.getElement(), new NoTasksComponent(), RenderPosition.BEFOREEND);
   } else {
     let showingTasksCount = SHOWING_TASKS_COUNT_ON_START;
 
@@ -67,16 +67,15 @@ const renderBoard = (boardComponent, tasks) => {
         .forEach((task) => renderTask(tasksComponent.getElement(), task));
 
       if (showingTasksCount >= tasks.length) {
-        loadMoreButtonComponent.getElement().remove();
-        loadMoreButtonComponent.removeElement();
+        remove(loadMoreButtonComponent);
       }
     });
 
-    render(boardComponent.getElement(), new SortComponent().getElement(), RenderPosition.BEFOREEND);
-    render(boardComponent.getElement(), tasksComponent.getElement(), RenderPosition.BEFOREEND);
-    render(boardComponent.getElement(), loadMoreButtonComponent.getElement(), RenderPosition.BEFOREEND);
+    render(boardComponent.getElement(), new SortComponent(), RenderPosition.BEFOREEND);
+    render(boardComponent.getElement(), tasksComponent, RenderPosition.BEFOREEND);
+    render(boardComponent.getElement(), loadMoreButtonComponent, RenderPosition.BEFOREEND);
   }
-  render(siteMainElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
+  render(siteMainElement, boardComponent, RenderPosition.BEFOREEND);
 };
 
 const siteMainElement = document.querySelector(`.main`);
@@ -86,6 +85,6 @@ const tasks = generateTasks(TASK_COUNT);
 const boardComponent = new BoardComponent();
 const tasksComponent = new TasksComponent();
 
-render(siteHeaderElement, new SiteMenuComponent().getElement(), RenderPosition.BEFOREEND);
-render(siteMainElement, new FilterComponent(filters).getElement(), RenderPosition.BEFOREEND);
+render(siteHeaderElement, new SiteMenuComponent(), RenderPosition.BEFOREEND);
+render(siteMainElement, new FilterComponent(filters), RenderPosition.BEFOREEND);
 renderBoard(boardComponent, tasks);
