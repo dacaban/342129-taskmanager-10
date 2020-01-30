@@ -1,23 +1,32 @@
 import BoardComponent from './components/board.js';
 import BoardController from "./controllers/board";
-import FilterComponent from './components/filter.js';
+import FilterController from './controllers/filter.js';
 import SiteMenuComponent from './components/site-menu.js';
+import Tasks from './models/tasks';
 import {generateTasks} from './mock/task.js';
-import {generateFilters} from './mock/filter.js';
 import {render, RenderPosition} from "./utils/render";
 
 const TASK_COUNT = 22;
 
-const siteHeaderElement = document.querySelector(`.main__control`);
-render(siteHeaderElement, new SiteMenuComponent(), RenderPosition.BEFOREEND);
-
-const filters = generateFilters();
 const siteMainElement = document.querySelector(`.main`);
-render(siteMainElement, new FilterComponent(filters), RenderPosition.BEFOREEND);
+const siteHeaderElement = document.querySelector(`.main__control`);
+const siteMenuComponent = new SiteMenuComponent();
 
+siteMenuComponent.getElement().querySelector(`.control__label--new-task`)
+  .addEventListener(`click`, () => {
+    boardController.createTask();
+  });
+
+render(siteHeaderElement, siteMenuComponent, RenderPosition.BEFOREEND);
 const tasks = generateTasks(TASK_COUNT);
+const tasksModel = new Tasks();
+tasksModel.setTasks(tasks);
+
+const filterController = new FilterController(siteMainElement, tasksModel);
+filterController.render();
+
 const boardComponent = new BoardComponent();
-const boardController = new BoardController(boardComponent);
-boardController.render(tasks);
+const boardController = new BoardController(boardComponent, tasksModel);
+boardController.render();
 
 render(siteMainElement, boardComponent, RenderPosition.BEFOREEND);
